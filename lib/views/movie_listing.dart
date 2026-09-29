@@ -52,38 +52,6 @@ class MovieListing extends StatelessWidget {
         ],
       );
 
-  Widget _buildTicketSelection() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Tickets',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          const SizedBox(height: 7),
-          Row(
-            children: [
-              DropdownMenu<int>(
-                initialSelection: 5,
-                onSelected: (int? value) {
-                  if (value != null) {
-                    // setState(() {});
-                  }
-                },
-                dropdownMenuEntries: const [
-                  DropdownMenuEntry(value: 1, label: '1'),
-                  DropdownMenuEntry(value: 2, label: '2'),
-                  DropdownMenuEntry(value: 3, label: '3'),
-                  DropdownMenuEntry(value: 4, label: '4'),
-                  DropdownMenuEntry(value: 5, label: '5'),
-                ],
-              ),
-              const SizedBox(width: 10),
-              const Text('Adult (£7.50)'),
-            ],
-          ),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(),
@@ -98,10 +66,61 @@ class MovieListing extends StatelessWidget {
                 const SizedBox(height: 25),
                 _buildScreeningDetails(),
                 const SizedBox(height: 30),
-                _buildTicketSelection(),
+                const TicketSelection(),
               ],
             ),
           ),
         ),
       );
+}
+
+class TicketSelection extends StatefulWidget {
+  const TicketSelection({super.key});
+
+  @override
+  State<TicketSelection> createState() => _TicketSelectionState();
+}
+
+class _TicketSelectionState extends State<TicketSelection> {
+  int _ticketQuantity = 0;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Tickets',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 7),
+          Row(
+            children: [
+              DropdownMenu<int>(
+                initialSelection: 0,
+                onSelected: (int? value) {
+                  if (value != null) {
+                    _setTicketQuantity(value);
+                  }
+                },
+                dropdownMenuEntries: const [
+                  DropdownMenuEntry(value: 0, label: '0'),
+                  DropdownMenuEntry(value: 1, label: '1'),
+                  DropdownMenuEntry(value: 2, label: '2'),
+                  DropdownMenuEntry(value: 3, label: '3'),
+                  DropdownMenuEntry(value: 4, label: '4'),
+                  DropdownMenuEntry(value: 5, label: '5'),
+                ],
+              ),
+              const SizedBox(width: 10),
+              const Text('Adult (£7.50)'),
+            ],
+          ),
+        ],
+      );
+
+  void _setTicketQuantity(int quantity) {
+    setState(() => _ticketQuantity = quantity);
+    print(
+        'Ticket quantity set to $_ticketQuantity, total price: £${(_ticketQuantity * 7.50).toStringAsFixed(2)}');
+  }
 }
