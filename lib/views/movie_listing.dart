@@ -20,14 +20,17 @@ class MovieListing extends StatelessWidget {
               const Expanded(
                 child: Text('The Odyssey (2026)',
                     style: TextStyle(
-                      color: cinemaFontWhite,
+                      color: cinemaBrand,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     )),
               ),
               const Text(
                 '(15)',
-                style: cinemaHeaderStyle,
+                style: TextStyle(
+                  color: cinemaFontMuted,
+                  fontSize: 18,
+                ),
               ),
             ],
           ),
@@ -140,49 +143,6 @@ class TicketSelection extends StatefulWidget {
 class _TicketSelectionState extends State<TicketSelection> {
   int _ticketQuantity = 0;
 
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Tickets',
-            style: cinemaHeaderStyle,
-          ),
-          const SizedBox(height: 7),
-          Row(
-            children: [
-              DropdownMenu<int>(
-                initialSelection: 0,
-                onSelected: (int? value) {
-                  if (value != null) {
-                    _setTicketQuantity(value);
-                  }
-                },
-                dropdownMenuEntries: const [
-                  DropdownMenuEntry(value: 0, label: '0'),
-                  DropdownMenuEntry(value: 1, label: '1'),
-                  DropdownMenuEntry(value: 2, label: '2'),
-                  DropdownMenuEntry(value: 3, label: '3'),
-                  DropdownMenuEntry(value: 4, label: '4'),
-                  DropdownMenuEntry(value: 5, label: '5'),
-                ],
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'Adult (£7.50)',
-                style: TextStyle(color: cinemaFontWhite, fontSize: 16),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => _orderResult(),
-            child: const Text('Add to order',
-                style: TextStyle(color: Colors.black)),
-          ),
-        ],
-      );
-
   void _orderResult() {
     final bool ticketsChosen = _ticketQuantity > 0;
     final double totalPrice = _ticketQuantity * 7.50;
@@ -225,4 +185,52 @@ class _TicketSelectionState extends State<TicketSelection> {
   void _setTicketQuantity(int quantity) {
     setState(() => _ticketQuantity = quantity);
   }
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Tickets',
+            style: cinemaHeaderStyle,
+          ),
+          const SizedBox(height: 7),
+          Row(
+            children: [
+              DropdownMenu<int>(
+                initialSelection: 0,
+                onSelected: (int? value) {
+                  if (value != null) {
+                    _setTicketQuantity(value);
+                  }
+                },
+                dropdownMenuEntries: const [
+                  DropdownMenuEntry(value: 0, label: '0'),
+                  DropdownMenuEntry(value: 1, label: '1'),
+                  DropdownMenuEntry(value: 2, label: '2'),
+                  DropdownMenuEntry(value: 3, label: '3'),
+                  DropdownMenuEntry(value: 4, label: '4'),
+                  DropdownMenuEntry(value: 5, label: '5'),
+                ],
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                'Adult (£7.50)',
+                style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => _orderResult(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: cinemaBrandLight,
+              foregroundColor: cinemaFontWhite,
+            ),
+            child: const Text(
+              'ADD TO ORDER',
+            ),
+          ),
+        ],
+      );
 }
