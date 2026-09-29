@@ -115,12 +115,21 @@ class _TicketSelectionState extends State<TicketSelection> {
               const Text('Adult (£7.50)'),
             ],
           ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => _orderResult(),
+            child: const Text('Add to order',
+                style: TextStyle(color: Colors.black)),
+          ),
         ],
       );
 
+  void _orderResult() {
+    final bool ticketsChosen = _ticketQuantity > 0;
+    final double totalPrice = _ticketQuantity * 7.50;
+  }
+
   void _setTicketQuantity(int quantity) {
     setState(() => _ticketQuantity = quantity);
-    print(
-        'Ticket quantity set to $_ticketQuantity, total price: £${(_ticketQuantity * 7.50).toStringAsFixed(2)}');
   }
 }
