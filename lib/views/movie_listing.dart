@@ -18,12 +18,17 @@ class MovieListing extends StatelessWidget {
           Row(
             children: [
               const Expanded(
-                child: Text(
-                  'The Odyssey (2026)',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
+                child: Text('The Odyssey (2026)',
+                    style: TextStyle(
+                      color: cinemaFontWhite,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    )),
               ),
-              const Text('(15)', style: TextStyle(fontSize: 16)),
+              const Text(
+                '(15)',
+                style: cinemaHeaderStyle,
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -33,6 +38,7 @@ class MovieListing extends StatelessWidget {
             'Sea with his fellow soldiers, they soon find themselves '
             'battling not only the elements, but an array of deadly '
             'obstacles and mythical creatures along the way.',
+            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
           ),
         ],
       );
@@ -40,15 +46,26 @@ class MovieListing extends StatelessWidget {
   Widget _buildScreeningDetails() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Southsea Cinema Room'),
-          const Text('Monday 12 Oct 2026, 14:00 - 16:52'),
+          const Text(
+            'Southsea Cinema Room',
+            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Monday 12 Oct 2026, 14:00 - 16:52',
+            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+          ),
           const SizedBox(height: 25),
           const Text(
             'Please note that Discounts / Membership Benefits '
             'will be applied once you have selected your tickets',
+            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
           ),
           const SizedBox(height: 24),
-          const Text('Select Quantities (Up to 5 in total)'),
+          const Text(
+            'Select Quantities (Up to 5 in total)',
+            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+          ),
         ],
       );
 
@@ -56,9 +73,11 @@ class MovieListing extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(),
         drawer: const NavDrawer(),
+        backgroundColor: cinemaBackground,
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(24),
+            color: cinemaBackground,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,7 +109,7 @@ class _TicketSelectionState extends State<TicketSelection> {
         children: [
           const Text(
             'Tickets',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: cinemaHeaderStyle,
           ),
           const SizedBox(height: 7),
           Row(
@@ -112,7 +131,10 @@ class _TicketSelectionState extends State<TicketSelection> {
                 ],
               ),
               const SizedBox(width: 10),
-              const Text('Adult (£7.50)'),
+              const Text(
+                'Adult (£7.50)',
+                style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -131,9 +153,10 @@ class _TicketSelectionState extends State<TicketSelection> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
+        backgroundColor: cinemaSurface,
         title: Text(
           ticketsChosen ? 'Added to order' : 'No tickets selected',
-          style: const TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: cinemaFontWhite),
         ),
         content: Text(
           ticketsChosen
@@ -147,13 +170,17 @@ class _TicketSelectionState extends State<TicketSelection> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
+              foregroundColor: cinemaBrand,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(right: 24),
             ),
             child: const Text('OK'),
           ),
         ],
-        contentTextStyle: const TextStyle(fontSize: 16, color: Colors.black),
+        contentTextStyle: const TextStyle(
+          fontSize: 16,
+          color: cinemaFontWhite,
+        ),
       ),
     );
   }
