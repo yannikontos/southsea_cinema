@@ -127,6 +127,35 @@ class _TicketSelectionState extends State<TicketSelection> {
   void _orderResult() {
     final bool ticketsChosen = _ticketQuantity > 0;
     final double totalPrice = _ticketQuantity * 7.50;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(
+          ticketsChosen ? 'Added to order' : 'No tickets selected',
+          style: const TextStyle(fontSize: 18, color: Colors.black),
+        ),
+        content: Text(
+          ticketsChosen
+              ? 'Added $_ticketQuantity adult ticket'
+                  '${_ticketQuantity == 1 ? '' : 's'} to your order.\n'
+                  'Total: £${totalPrice.toStringAsFixed(2)}'
+              : 'Please select at least one ticket before adding to your order.',
+        ),
+        actionsAlignment: MainAxisAlignment.start,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(right: 24),
+            ),
+            child: const Text('OK'),
+          ),
+        ],
+        contentTextStyle: const TextStyle(fontSize: 16, color: Colors.black),
+      ),
+    );
   }
 
   void _setTicketQuantity(int quantity) {
