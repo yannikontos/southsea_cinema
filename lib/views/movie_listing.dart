@@ -74,21 +74,58 @@ class MovieListing extends StatelessWidget {
         appBar: _buildAppBar(),
         drawer: const NavDrawer(),
         backgroundColor: cinemaBackground,
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            color: cinemaBackground,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildMovieDetails(),
-                const SizedBox(height: 25),
-                _buildScreeningDetails(),
-                const SizedBox(height: 30),
-                const TicketSelection(),
-              ],
-            ),
-          ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 1400;
+            final isMedium = constraints.maxWidth >= 600;
+            final isSmall = constraints.maxWidth < 600;
+            final detailsLayout = isWide
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 2, child: _buildMovieDetails()),
+                      const SizedBox(width: 45),
+                      Expanded(child: _buildScreeningDetails()),
+                      const SizedBox(width: 45),
+                      Expanded(child: const TicketSelection()),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (isMedium)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(child: _buildMovieDetails()),
+                            const SizedBox(width: 45),
+                            Expanded(child: _buildScreeningDetails()),
+                          ],
+                        )
+                      else if (isSmall) ...[
+                        _buildMovieDetails(),
+                        const SizedBox(height: 25),
+                        _buildScreeningDetails(),
+                      ],
+                      const SizedBox(height: 30),
+                      const TicketSelection(),
+                    ],
+                  );
+
+            return SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                color: cinemaBackground,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    detailsLayout,
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       );
 }
