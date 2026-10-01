@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
+import 'package:southsea_cinema/widgets/movie_card.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
+import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/repositories/movie_repository.dart';
 
 class MovieListing extends StatelessWidget {
   const MovieListing({super.key});
@@ -79,6 +82,9 @@ class MovieListing extends StatelessWidget {
         backgroundColor: cinemaBackground,
         body: LayoutBuilder(
           builder: (context, constraints) {
+            final MovieRepository movie = MovieRepository();
+            final List<Movie> movies = movie.getMovies();
+
             final isWide = constraints.maxWidth >= 1400;
             final isMedium = constraints.maxWidth >= 600;
             final isSmall = constraints.maxWidth < 600;
@@ -117,12 +123,12 @@ class MovieListing extends StatelessWidget {
 
             return SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(15),
                 color: cinemaBackground,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    detailsLayout,
+                    MovieCard(movie: movies[0]),
                     const SizedBox(height: 30),
                   ],
                 ),
