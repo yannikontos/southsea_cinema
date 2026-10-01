@@ -89,6 +89,36 @@ class MovieCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'BOOK TICKETS',
+                        style: TextStyle(
+                          color: cinemaFontWhite,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                          spacing: 4,
+                          children: movie.screeningTime.map((time) {
+                            return Row(children: [
+                              Flexible(
+                                  fit: FlexFit.tight,
+                                  child: Text(time,
+                                      style: TextStyle(
+                                        color: cinemaFontWhite,
+                                        fontSize: 14,
+                                      ))),
+                              ElevatedButton(
+                                onPressed: () => {},
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: cinemaBrand,
+                                    foregroundColor: cinemaFontWhite),
+                                child: const Text('BOOK NOW'),
+                              ),
+                            ]);
+                          }).toList()),
                     ],
                   ),
                 ),
