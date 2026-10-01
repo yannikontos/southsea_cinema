@@ -9,14 +9,16 @@ class MovieRepository {
           ageRating: '15',
           description:
               'Odysseus, king of Ithaca, embarks on a perilous journey to return home after the Trojan War. Crossing the Mediterranean Sea with his fellow soldiers, they soon find themselves battling not only the elements, but an array of deadly obstacles and mythical creatures along the way.',
-          imagePath: 'images/odyssey_poster.png'),
+          imagePath: 'images/odyssey_poster.png',
+          screeningTime: ['Thursday 8 Oct 2026 12:40']),
       Movie(
           id: 'dune2024',
           title: 'Dune: Part Two',
           ageRating: '12',
           description:
               'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the universe, he must prevent a terrible future only he can foresee.',
-          imagePath: 'images/dune2_poster.png')
+          imagePath: 'images/dune2_poster.png',
+          screeningTime: ['Friday 9 Oct 2026 11:20'])
     ];
   }
 }
