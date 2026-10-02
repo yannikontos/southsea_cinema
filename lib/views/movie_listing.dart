@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
-import 'package:southsea_cinema/widgets/movie_card.dart';
-import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/models/movie.dart';
-import 'package:southsea_cinema/repositories/movie_repository.dart';
+// import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
 class MovieListing extends StatelessWidget {
-  const MovieListing({super.key});
+  final Movie movie;
+  final String screeningTime;
+
+  const MovieListing({
+    super.key,
+    required this.movie,
+    required this.screeningTime,
+  });
 
   PreferredSizeWidget _buildAppBar() => AppBar(
         title: const Text(appTitle, style: cinemaHeaderStyle),
@@ -20,17 +25,20 @@ class MovieListing extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Expanded(
-                child: Text('The Odyssey (2026)',
-                    style: TextStyle(
-                      color: cinemaBrand,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    )),
+              Flexible(
+                child: Text(
+                  movie.title.toUpperCase(),
+                  style: const TextStyle(
+                    color: cinemaBrand,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              const Text(
-                '(15)',
-                style: TextStyle(
+              const SizedBox(width: 5),
+              Text(
+                '(${movie.ageRating})',
+                style: const TextStyle(
                   color: cinemaFontMuted,
                   fontSize: 18,
                 ),
@@ -38,13 +46,9 @@ class MovieListing extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Odysseus, king of Ithaca, embarks on a perilous journey to '
-            'return home after the Trojan War. Crossing the Mediterranean '
-            'Sea with his fellow soldiers, they soon find themselves '
-            'battling not only the elements, but an array of deadly '
-            'obstacles and mythical creatures along the way.',
-            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+          Text(
+            movie.description,
+            style: const TextStyle(color: cinemaFontWhite, fontSize: 16),
           ),
         ],
       );
@@ -57,9 +61,9 @@ class MovieListing extends StatelessWidget {
             style: TextStyle(color: cinemaFontWhite, fontSize: 16),
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Monday 12 Oct 2026, 14:00 - 16:52',
-            style: TextStyle(color: cinemaFontWhite, fontSize: 16),
+          Text(
+            screeningTime,
+            style: const TextStyle(color: cinemaFontWhite, fontSize: 16),
           ),
           const SizedBox(height: 25),
           const Text(
@@ -78,13 +82,10 @@ class MovieListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar(),
-        drawer: const NavDrawer(),
+        // drawer: const NavDrawer(),
         backgroundColor: cinemaBackground,
         body: LayoutBuilder(
           builder: (context, constraints) {
-            final MovieRepository movie = MovieRepository();
-            final List<Movie> movies = movie.getMovies();
-
             final isWide = constraints.maxWidth >= 1400;
             final isMedium = constraints.maxWidth >= 600;
             final isSmall = constraints.maxWidth < 600;
@@ -92,7 +93,7 @@ class MovieListing extends StatelessWidget {
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(flex: 2, child: _buildMovieDetails()),
+                      Expanded(child: _buildMovieDetails()),
                       const SizedBox(width: 45),
                       Expanded(child: _buildScreeningDetails()),
                       const SizedBox(width: 45),
@@ -128,7 +129,7 @@ class MovieListing extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MovieCard(movie: movies[0]),
+                    detailsLayout,
                     const SizedBox(height: 30),
                   ],
                 ),
