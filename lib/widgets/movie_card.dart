@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/views/movie_listing.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -100,25 +101,43 @@ class MovieCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Column(
-                          spacing: 4,
-                          children: movie.screeningTime.map((time) {
-                            return Row(children: [
+                        spacing: 4,
+                        children: movie.screeningTime.map((time) {
+                          return Row(
+                            children: [
                               Flexible(
-                                  fit: FlexFit.tight,
-                                  child: Text(time,
-                                      style: TextStyle(
-                                        color: cinemaFontWhite,
-                                        fontSize: 14,
-                                      ))),
+                                fit: FlexFit.tight,
+                                child: Text(
+                                  time,
+                                  style: const TextStyle(
+                                    color: cinemaFontWhite,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
                               ElevatedButton(
-                                onPressed: () => {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MovieListing(
+                                        movie: movie,
+                                        screeningTime: time,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: cinemaBrand,
-                                    foregroundColor: cinemaFontWhite),
+                                  backgroundColor: cinemaBrand,
+                                  foregroundColor: cinemaFontWhite,
+                                ),
                                 child: const Text('BOOK NOW'),
                               ),
-                            ]);
-                          }).toList()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20)
                     ],
                   ),
                 ),
