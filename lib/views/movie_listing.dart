@@ -97,7 +97,7 @@ class MovieListing extends StatelessWidget {
                       const SizedBox(width: 45),
                       Expanded(child: _buildScreeningDetails()),
                       const SizedBox(width: 45),
-                      Expanded(child: const TicketSelection()),
+                      Expanded(child: TicketSelection(movie: movie)),
                     ],
                   )
                 : Column(
@@ -118,7 +118,7 @@ class MovieListing extends StatelessWidget {
                         _buildScreeningDetails(),
                       ],
                       const SizedBox(height: 30),
-                      const TicketSelection(),
+                      TicketSelection(movie: movie),
                     ],
                   );
 
@@ -141,7 +141,8 @@ class MovieListing extends StatelessWidget {
 }
 
 class TicketSelection extends StatefulWidget {
-  const TicketSelection({super.key});
+  final Movie movie;
+  const TicketSelection({super.key, required this.movie});
 
   @override
   State<TicketSelection> createState() => _TicketSelectionState();
@@ -221,8 +222,8 @@ class _TicketSelectionState extends State<TicketSelection> {
                 ],
               ),
               const SizedBox(width: 10),
-              const Text(
-                'Adult (£7.50)',
+              Text(
+                'Adult (${widget.movie.formattedPrice})',
                 style: TextStyle(color: cinemaFontWhite, fontSize: 16),
               ),
             ],
