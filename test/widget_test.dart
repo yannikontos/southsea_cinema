@@ -42,6 +42,6 @@ void main() {
     expect(find.text('Added to order'), findsOneWidget);
     expect(find.textContaining('Added 1 adult ticket to your order.'),
         findsOneWidget);
-    expect(find.textContaining('Total: £7.50'), findsOneWidget);
+    expect(find.textContaining('Total: £11.00'), findsOneWidget);
   });
 }

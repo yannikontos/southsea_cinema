@@ -18,7 +18,7 @@ class MovieRepository {
           ageRating: '12',
           description:
               'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the universe, he must prevent a terrible future only he can foresee.',
-          ticketPrice: 19.00,
+          ticketPrice: 19,
           imagePath: 'images/dune2_poster.png',
           screeningTime: ['Friday 9 Oct 2026 11:20'])
     ];

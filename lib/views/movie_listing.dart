@@ -153,7 +153,7 @@ class _TicketSelectionState extends State<TicketSelection> {
 
   void _orderResult() {
     final bool ticketsChosen = _ticketQuantity > 0;
-    final double totalPrice = _ticketQuantity * 7.50;
+    final double totalPrice = _ticketQuantity * widget.movie.ticketPrice;
 
     showDialog(
       context: context,
