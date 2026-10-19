@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
+import 'package:southsea_cinema/widgets/primary_btn.dart';
 
 class MovieListing extends StatelessWidget {
   final Movie movie;
@@ -226,16 +227,7 @@ class _TicketSelectionState extends State<TicketSelection> {
             ],
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => _orderResult(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: cinemaBrandLight,
-              foregroundColor: cinemaFontWhite,
-            ),
-            child: const Text(
-              'ADD TO ORDER',
-            ),
-          ),
+          PrimaryBtn(label: 'ADD TO ORDER', onPressed: _orderResult),
         ],
       );
 }
