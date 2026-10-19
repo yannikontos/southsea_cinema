@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/main.dart';
+import 'package:southsea_cinema/widgets/primary_btn.dart';
 
 void main() {
   testWidgets('initial home screen shows movies and booking buttons',
@@ -19,7 +20,7 @@ void main() {
     await tester.pumpWidget(const SouthseaCinemaApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'BOOK NOW').first);
+    await tester.tap(find.widgetWithText(PrimaryBtn, 'BOOK NOW').first);
     await tester.pumpAndSettle();
 
     expect(find.text('THE ODYSSEY'), findsOneWidget);
