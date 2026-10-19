@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
-// import 'package:southsea_cinema/widgets/nav_drawer.dart';
+import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
 class MovieListing extends StatelessWidget {
   final Movie movie;
@@ -12,13 +12,6 @@ class MovieListing extends StatelessWidget {
     required this.movie,
     required this.screeningTime,
   });
-
-  PreferredSizeWidget _buildAppBar() => AppBar(
-        title: const Text(appTitle, style: cinemaHeaderStyle),
-        backgroundColor: cinemaSurface,
-        iconTheme: const IconThemeData(color: cinemaBrand),
-        elevation: 0,
-      );
 
   Widget _buildMovieDetails() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,9 +74,13 @@ class MovieListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar(),
-        // drawer: const NavDrawer(),
-        backgroundColor: cinemaBackground,
+        appBar: AppBar(
+          title: const Text(
+            appTitle,
+            style: cinemaHeaderStyle,
+          ),
+        ),
+        drawer: const NavDrawer(),
         body: LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth >= 1400;
