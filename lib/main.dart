@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
+import 'package:southsea_cinema/views/account_settings.dart';
 import 'package:southsea_cinema/views/home_view.dart';
+import 'package:southsea_cinema/views/movie_basket.dart';
 // import 'package:southsea_cinema/views/movie_listing.dart';
 // import 'package:southsea_cinema/models/movie.dart';
 
@@ -32,6 +34,9 @@ class SouthseaCinemaApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeView(),
+        '/basket': (context) => MovieBasket(),
+        '/settings': (context) => AccountSettings(),
+
         // '/listing': (context) => MovieListing(
         //     movie: Movie(
         //         id: 'odyssey2026',
