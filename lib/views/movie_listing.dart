@@ -97,7 +97,12 @@ class MovieListing extends StatelessWidget {
                       const SizedBox(width: 45),
                       Expanded(child: _buildScreeningDetails()),
                       const SizedBox(width: 45),
-                      Expanded(child: TicketSelection(movie: movie)),
+                      Expanded(
+                        child: TicketSelection(
+                          movie: movie,
+                          screeningTime: screeningTime,
+                        ),
+                      ),
                     ],
                   )
                 : Column(
@@ -118,7 +123,10 @@ class MovieListing extends StatelessWidget {
                         _buildScreeningDetails(),
                       ],
                       const SizedBox(height: 30),
-                      TicketSelection(movie: movie),
+                      TicketSelection(
+                        movie: movie,
+                        screeningTime: screeningTime,
+                      ),
                     ],
                   );
 
@@ -142,7 +150,13 @@ class MovieListing extends StatelessWidget {
 
 class TicketSelection extends StatefulWidget {
   final Movie movie;
-  const TicketSelection({super.key, required this.movie});
+  final String screeningTime;
+
+  const TicketSelection({
+    super.key,
+    required this.movie,
+    required this.screeningTime,
+  });
 
   @override
   State<TicketSelection> createState() => _TicketSelectionState();
@@ -193,6 +207,7 @@ class _TicketSelectionState extends State<TicketSelection> {
       final CartItem item = CartItem(
         movie: widget.movie,
         quantity: _ticketQuantity,
+        screeningTime: widget.screeningTime,
       );
       CartRepository.instance.addItem(item);
     }
