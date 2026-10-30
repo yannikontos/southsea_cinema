@@ -4,11 +4,13 @@ import 'package:southsea_cinema/constants.dart';
 class PrimaryBtn extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
+  final FontWeight? fontWeight;
 
   const PrimaryBtn({
     super.key,
     required this.label,
     required this.onPressed,
+    this.fontWeight,
   });
 
   @override
@@ -20,7 +22,10 @@ class PrimaryBtn extends StatelessWidget {
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
       onPressed: onPressed,
-      child: Text(label),
+      child: Text(
+        label,
+        style: TextStyle(fontWeight: fontWeight),
+      ),
     );
   }
 }
