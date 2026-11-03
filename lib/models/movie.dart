@@ -19,4 +19,30 @@ class Movie {
   String get formattedPrice => '£${ticketPrice.toStringAsFixed(2)}';
   bool get isChildFriendly => ageRating == 'U' || ageRating == 'PG';
   bool get isAdultOnly => ageRating == '18';
+
+  factory Movie.classFromJson(Map<String, dynamic> json) {
+    return Movie(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      ageRating: json['ageRating'] as String,
+      description: json['description'] as String,
+      ticketPrice: (json['ticketPrice'] as num).toDouble(),
+      imagePath: json['imagePath'] as String,
+      screeningTime: List<String>.from(json['screeningTime'] as List),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{
+      'id': id,
+      'title': title,
+      'ageRating': ageRating,
+      'description': description,
+      'ticketPrice': ticketPrice,
+      'imagePath': imagePath,
+      'screeningTime': screeningTime,
+    };
+    return data;
+  }
 }
+
