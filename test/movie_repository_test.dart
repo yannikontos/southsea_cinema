@@ -3,6 +3,8 @@ import 'package:southsea_cinema/models/movie.dart';
 import 'package:southsea_cinema/repositories/movie_repository.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('MovieRepository', () {
     test('getMovies returns at least two movies', () {
       final repository = MovieRepository();
@@ -75,6 +77,19 @@ void main() {
       expect(movies.first.ticketPrice, 11.00);
 
       expect(repository.getMoviesUnderPrice(10.00), isEmpty);
+    });
+    test('loadMoviesFromAsset caches the loaded movies', () async {
+      final MovieRepository repository = MovieRepository();
+      final List<Movie> movies = await repository.loadMoviesFromAsset();
+
+      expect(movies.length, 2);
+      expect(movies[0].title, 'The Odyssey');
+      expect(movies[0].formattedPrice, '£11.00');
+      expect(movies[0].isChildFriendly, isFalse);
+      expect(movies[1].title, 'Dune: Part Two');
+      expect(movies[1].formattedPrice, '£19.00');
+      expect(movies[1].isChildFriendly, isFalse);
+      expect(repository.getMovies(), movies);
     });
   });
 }

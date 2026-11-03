@@ -65,5 +65,42 @@ void main() {
       expect(movie18.isAdultOnly, isTrue);
       expect(movie16.isAdultOnly, isFalse);
     });
+
+    test('JSON conversion preserves movie fields', () {
+      final Map<String, dynamic> data = <String, dynamic>{
+        'id': 'jsonTest',
+        'title': 'Test Movie JSON',
+        'ageRating': 'PG',
+        'description': 'A test movie.',
+        'ticketPrice': 10.0,
+        'imagePath': '#',
+        'screeningTime': ['Friday 2 Oct 2026 11:20'],
+      };
+
+      final Movie movie = Movie.classFromJson(data);
+      expect(movie.id, 'jsonTest');
+      expect(movie.title, 'Test Movie JSON');
+      expect(movie.ageRating, 'PG');
+      expect(movie.description, 'A test movie.');
+      expect(movie.ticketPrice, 10.0);
+      expect(movie.imagePath, '#');
+      expect(movie.screeningTime, ['Friday 2 Oct 2026 11:20']);
+    });
+  });
+  test('JSON conversion accepts a whole num price and correctly formatted price', () {
+    final Map<String, dynamic> data = <String, dynamic>{
+      'id': 'jsonTest',
+      'title': 'Test Movie JSON',
+      'ageRating': 'PG',
+      'description': 'A test movie.',
+      'ticketPrice': 5,
+      'imagePath': '#',
+      'screeningTime': ['Friday 2 Oct 2026 11:20'],
+    };
+
+    final Movie movie = Movie.classFromJson(data);
+    expect(movie.ticketPrice, 5.0);
+    expect(movie.ticketPrice, isA<double>());
+    expect(movie.formattedPrice, '£5.00');
   });
 }
