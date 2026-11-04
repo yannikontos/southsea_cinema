@@ -4,18 +4,32 @@ import 'package:southsea_cinema/repositories/movie_repository.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  late MovieRepository repository;
+  late List<Movie> movies;
+
+  setUp(() async {
+    repository = MovieRepository();
+    movies = await repository.loadMoviesFromAsset();
+  });
 
   group('MovieRepository', () {
-    test('getMovies returns at least two movies', () {
-      final repository = MovieRepository();
-      final movies = repository.getMovies();
-
-      expect(movies, hasLength(greaterThanOrEqualTo(2)));
+    test('loads every movie from the asset and caches the result', () async {
+      expect(movies, hasLength(3));
+      expect(movies.map((movie) => movie.id), [
+        'odyssey2026',
+        'dune2024',
+        'scream1996',
+      ]);
+      expect(movies.map((movie) => movie.title), [
+        'The Odyssey',
+        'Dune: Part Two',
+        'Scream',
+      ]);
+      expect(await repository.loadMoviesFromAsset(), same(movies));
+      expect(repository.getMovies(), same(movies));
     });
 
     test('every movie has a non-empty, unique id', () {
-      final repository = MovieRepository();
-      final movies = repository.getMovies();
       final ids = movies.map((movie) => movie.id).toSet();
 
       for (final movie in movies) {
@@ -25,9 +39,6 @@ void main() {
     });
 
     test('every movie has a non-empty title and age rating', () {
-      final repository = MovieRepository();
-      final movies = repository.getMovies();
-
       for (final movie in movies) {
         expect(movie.title, isNotEmpty);
         expect(movie.ageRating, isNotEmpty);
@@ -35,61 +46,36 @@ void main() {
     });
 
     test('every movie has a ticket price greater than zero', () {
-      final repository = MovieRepository();
-      final movies = repository.getMovies();
-
       for (final movie in movies) {
         expect(movie.ticketPrice, greaterThan(0));
       }
     });
 
     test('getMovieById returns the matching movie or null when not found', () {
-      final repository = MovieRepository();
       final Movie? movie = repository.getMovieById('odyssey2026');
 
       expect(movie, isNotNull);
-      expect(movie?.id, 'odyssey2026');
       expect(movie?.title, 'The Odyssey');
       expect(movie?.ticketPrice, 11.00);
       expect(repository.getMovieById('missing-movie'), isNull);
     });
 
-    test(
-        'getMoviesByAgeRating returns all movies with the specified age rating',
-        () {
-      final repository = MovieRepository();
-      final movies = repository.getMoviesByAgeRating('12');
+    test('getMoviesByAgeRating returns matching movies', () {
+      final List<Movie> matchingMovies = repository.getMoviesByAgeRating('12');
 
-      expect(movies, hasLength(1));
-      expect(movies.first.title, 'Dune: Part Two');
-      expect(movies.first.ageRating, '12');
-
+      expect(matchingMovies, hasLength(1));
+      expect(matchingMovies.first.title, 'Dune: Part Two');
+      expect(matchingMovies.first.ageRating, '12');
       expect(repository.getMoviesByAgeRating('99'), isEmpty);
     });
 
-    test('getMoviesUnderPrice returns all movies under the specified amount',
-        () {
-      final repository = MovieRepository();
-      final movies = repository.getMoviesUnderPrice(15.00);
+    test('getMoviesUnderPrice returns movies below the specified amount', () {
+      final List<Movie> matchingMovies = repository.getMoviesUnderPrice(15);
 
-      expect(movies, hasLength(1));
-      expect(movies.first.title, 'The Odyssey');
-      expect(movies.first.ticketPrice, 11.00);
-
-      expect(repository.getMoviesUnderPrice(10.00), isEmpty);
-    });
-    test('loadMoviesFromAsset caches the loaded movies', () async {
-      final MovieRepository repository = MovieRepository();
-      final List<Movie> movies = await repository.loadMoviesFromAsset();
-
-      expect(movies.length, 2);
-      expect(movies[0].title, 'The Odyssey');
-      expect(movies[0].formattedPrice, '£11.00');
-      expect(movies[0].isChildFriendly, isFalse);
-      expect(movies[1].title, 'Dune: Part Two');
-      expect(movies[1].formattedPrice, '£19.00');
-      expect(movies[1].isChildFriendly, isFalse);
-      expect(repository.getMovies(), movies);
+      expect(matchingMovies, hasLength(2));
+      expect(matchingMovies.first.title, 'The Odyssey');
+      expect(matchingMovies.first.ticketPrice, 11.00);
+      expect(repository.getMoviesUnderPrice(5), isEmpty);
     });
   });
 }

@@ -31,12 +31,5 @@
     ],
     "ticketPrice": 5,
     "title": "Scream"
-  },
-  {
-    "id": "nonexistent",
-    "name": "nonexistent movie",
-    "description": "This item is not real!",
-    "price": 0.00,
-    "imagePath": "assets/images/nonexistent.jpeg"
   }
 ]

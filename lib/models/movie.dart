@@ -7,20 +7,21 @@ class Movie {
   final String imagePath;
   final List<String> screeningTime;
 
-  const Movie(
-      {required this.id,
-      required this.title,
-      required this.ageRating,
-      required this.description,
-      required this.ticketPrice,
-      required this.imagePath,
-      required this.screeningTime});
+  const Movie({
+    required this.id,
+    required this.title,
+    required this.ageRating,
+    required this.description,
+    required this.ticketPrice,
+    required this.imagePath,
+    required this.screeningTime,
+  });
 
   String get formattedPrice => '£${ticketPrice.toStringAsFixed(2)}';
   bool get isChildFriendly => ageRating == 'U' || ageRating == 'PG';
   bool get isAdultOnly => ageRating == '18';
 
-  factory Movie.classFromJson(Map<String, dynamic> json) {
+  factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -32,17 +33,13 @@ class Movie {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{
-      'id': id,
-      'title': title,
-      'ageRating': ageRating,
-      'description': description,
-      'ticketPrice': ticketPrice,
-      'imagePath': imagePath,
-      'screeningTime': screeningTime,
-    };
-    return data;
-  }
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'title': title,
+        'ageRating': ageRating,
+        'description': description,
+        'ticketPrice': ticketPrice,
+        'imagePath': imagePath,
+        'screeningTime': screeningTime,
+      };
 }
-

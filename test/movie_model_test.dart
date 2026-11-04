@@ -44,13 +44,14 @@ void main() {
 
     test('isAdultOnly returns false for non-18 ratings', () {
       final movie18 = Movie(
-          id: 'test18',
-          title: 'Test Movie 18',
-          ageRating: '18',
-          description: 'A test movie.',
-          ticketPrice: 10.0,
-          imagePath: '#',
-          screeningTime: ['Friday 2 Oct 2026 11:20']);
+        id: 'test18',
+        title: 'Test Movie 18',
+        ageRating: '18',
+        description: 'A test movie.',
+        ticketPrice: 10.0,
+        imagePath: '#',
+        screeningTime: ['Friday 2 Oct 2026 11:20'],
+      );
 
       final movie16 = Movie(
         id: 'test16',
@@ -77,7 +78,7 @@ void main() {
         'screeningTime': ['Friday 2 Oct 2026 11:20'],
       };
 
-      final Movie movie = Movie.classFromJson(data);
+      final Movie movie = Movie.fromJson(data);
       expect(movie.id, 'jsonTest');
       expect(movie.title, 'Test Movie JSON');
       expect(movie.ageRating, 'PG');
@@ -85,9 +86,10 @@ void main() {
       expect(movie.ticketPrice, 10.0);
       expect(movie.imagePath, '#');
       expect(movie.screeningTime, ['Friday 2 Oct 2026 11:20']);
+      expect(movie.toJson(), data);
     });
   });
-  test('JSON conversion accepts a whole num price and correctly formatted price', () {
+  test('JSON conversion accepts a whole-number price', () {
     final Map<String, dynamic> data = <String, dynamic>{
       'id': 'jsonTest',
       'title': 'Test Movie JSON',
@@ -98,9 +100,10 @@ void main() {
       'screeningTime': ['Friday 2 Oct 2026 11:20'],
     };
 
-    final Movie movie = Movie.classFromJson(data);
+    final Movie movie = Movie.fromJson(data);
     expect(movie.ticketPrice, 5.0);
     expect(movie.ticketPrice, isA<double>());
     expect(movie.formattedPrice, '£5.00');
+    expect(movie.toJson()['ticketPrice'], 5.0);
   });
 }
