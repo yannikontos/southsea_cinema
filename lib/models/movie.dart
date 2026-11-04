@@ -16,11 +16,9 @@ class Movie {
     required this.imagePath,
     required this.screeningTime,
   });
-
   String get formattedPrice => '£${ticketPrice.toStringAsFixed(2)}';
   bool get isChildFriendly => ageRating == 'U' || ageRating == 'PG';
   bool get isAdultOnly => ageRating == '18';
-
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       id: json['id'] as String,
@@ -32,7 +30,6 @@ class Movie {
       screeningTime: List<String>.from(json['screeningTime'] as List),
     );
   }
-
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'title': title,
