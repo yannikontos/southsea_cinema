@@ -92,7 +92,8 @@ void main() {
     expect(find.text('Settings changes cancelled.'), findsOneWidget);
   });
 
-  testWidgets('AccountSettings restores saved fields after reopening',
+  testWidgets(
+      'AccountSettings loads saved preferences and persists changes across navigation/refreshes',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(home: AccountSettings()),
@@ -159,7 +160,7 @@ void main() {
     );
   });
 
-  testWidgets('AccountSettings fills the form from existing preferences',
+  testWidgets('AccountSettings fills the form from existing memory preferences',
       (WidgetTester tester) async {
     SharedPreferencesAsyncPlatform.instance =
         InMemorySharedPreferencesAsync.withData(<String, Object>{
