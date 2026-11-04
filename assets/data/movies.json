@@ -20,5 +20,23 @@
     ],
     "ticketPrice": 19,
     "title": "Dune: Part Two"
+  },
+  {
+    "ageRating": "18",
+    "description": "In the small town of Woodsboro, California, a masked killer known as Ghostface begins murdering high school students, and a group of friends must use their knowledge of horror movies to unmask the killer.",
+    "id": "scream1996",
+    "imagePath": "images/scream1996_poster.png",
+    "screeningTime": [
+      "Tuesday 3 Nov 2026 11:20"
+    ],
+    "ticketPrice": 5,
+    "title": "Scream"
+  },
+  {
+    "id": "nonexistent",
+    "name": "nonexistent movie",
+    "description": "This item is not real!",
+    "price": 0.00,
+    "imagePath": "assets/images/nonexistent.jpeg"
   }
 ]
