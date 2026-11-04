@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/user_settings.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/widgets/primary_btn.dart';
+
+const String prefAddress = 'user_address';
+const String prefEmail = 'user_email';
+const String prefPatronNumber = 'user_patron_number';
+const String prefNewsletter = 'user_newsletter';
 
 class AccountSettings extends StatefulWidget {
   const AccountSettings({super.key});
@@ -17,18 +23,60 @@ class _AccountSettingsState extends State<AccountSettings> {
   late TextEditingController _patronNumberController;
   bool _receiveNewsLetter = false;
   String _confirmationMessage = '';
+  String _persistenceError = '';
 
   static const String _initialAddress =
-      'Some building,\nSome area,\nSome city,\nSome postcode';
-  static const String _initialEmail = 'dummy@temp.com';
-  static const String _initialPatronNumber = '99999';
+      '42 Example Street,\nSouthsea,\nPortsmouth,\nPO5 1AA';
+  static const String _initialEmail = 'alex.morgan@example.com';
+  static const int _initialPatronNumber = 12345;
+
+  final SharedPreferencesAsync _preferences = SharedPreferencesAsync();
+  UserSettings _savedSettings = const UserSettings(
+    address: _initialAddress,
+    email: _initialEmail,
+    patronNumber: _initialPatronNumber,
+  );
 
   @override
   void initState() {
     super.initState();
     _addressController = TextEditingController(text: _initialAddress);
     _emailController = TextEditingController(text: _initialEmail);
-    _patronNumberController = TextEditingController(text: _initialPatronNumber);
+    _patronNumberController =
+        TextEditingController(text: _initialPatronNumber.toString());
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    try {
+      final UserSettings settings = UserSettings(
+        address: await _preferences.getString(prefAddress) ?? _initialAddress,
+        email: await _preferences.getString(prefEmail) ?? _initialEmail,
+        patronNumber:
+            await _preferences.getInt(prefPatronNumber) ?? _initialPatronNumber,
+        receiveNewsletter: await _preferences.getBool(prefNewsletter) ?? false,
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _savedSettings = settings;
+        _addressController.text = settings.address;
+        _emailController.text = settings.email;
+        _patronNumberController.text = settings.patronNumber.toString();
+        _receiveNewsLetter = settings.receiveNewsletter;
+        _persistenceError = '';
+      });
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _persistenceError = 'Could not load saved settings: $error';
+      });
+    }
   }
 
   @override
@@ -41,15 +89,15 @@ class _AccountSettingsState extends State<AccountSettings> {
 
   void _cancelChanges() {
     setState(() {
-      _addressController.text = _initialAddress;
-      _emailController.text = _initialEmail;
-      _patronNumberController.text = _initialPatronNumber;
-      _receiveNewsLetter = false;
+      _addressController.text = _savedSettings.address;
+      _emailController.text = _savedSettings.email;
+      _patronNumberController.text = _savedSettings.patronNumber.toString();
+      _receiveNewsLetter = _savedSettings.receiveNewsletter;
       _confirmationMessage = 'Settings changes cancelled.';
     });
   }
 
-  void _saveSettings() {
+  Future<void> _saveSettings() async {
     final String address = _addressController.text.trim();
     final String email = _emailController.text.trim();
     final int patronNumber = int.tryParse(
@@ -64,10 +112,32 @@ class _AccountSettingsState extends State<AccountSettings> {
       receiveNewsletter: _receiveNewsLetter,
     );
 
-    setState(() {
-      _confirmationMessage =
-          'Settings saved for patron: ${settings.patronNumber}';
-    });
+    try {
+      await Future.wait<void>([
+        _preferences.setString(prefAddress, settings.address),
+        _preferences.setString(prefEmail, settings.email),
+        _preferences.setInt(prefPatronNumber, settings.patronNumber),
+        _preferences.setBool(prefNewsletter, settings.receiveNewsletter),
+      ]);
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _savedSettings = settings;
+        _persistenceError = '';
+        _confirmationMessage =
+            'Settings saved for patron: ${settings.patronNumber}';
+      });
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _persistenceError = 'Could not save settings: $error';
+      });
+    }
   }
 
   @override
@@ -205,6 +275,14 @@ class _AccountSettingsState extends State<AccountSettings> {
                   color: cinemaFontWhite,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+            ],
+            if (_persistenceError.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                key: const Key('persistenceError'),
+                _persistenceError,
+                style: const TextStyle(color: Colors.redAccent),
               ),
             ],
           ],
