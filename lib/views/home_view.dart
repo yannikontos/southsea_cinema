@@ -13,6 +13,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  static final MovieRepository _movieRepository = MovieRepository();
+
   List<Movie> movies = [];
   bool _loading = true;
   String _errorMessage = '';
@@ -25,8 +27,8 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> _loadMovies() async {
     try {
-      final MovieRepository movieRepository = MovieRepository();
-      final List<Movie> loadedMovies = movieRepository.getMovies();
+      final List<Movie> loadedMovies =
+          await _movieRepository.loadMoviesFromAsset();
       if (!mounted) {
         return;
       }
@@ -35,7 +37,9 @@ class _HomeViewState extends State<HomeView> {
         _loading = false;
       });
     } catch (error) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _errorMessage = 'Failed to load movies: $error';
         _loading = false;
@@ -59,12 +63,7 @@ class _HomeViewState extends State<HomeView> {
       );
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          appTitle,
-          style: cinemaHeaderStyle,
-        ),
-      ),
+      appBar: AppBar(title: const Text(appTitle, style: cinemaHeaderStyle)),
       drawer: const NavDrawer(),
       body: content,
     );
